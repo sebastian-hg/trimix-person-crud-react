@@ -162,18 +162,14 @@ const FilterPage = () => {
                     }
 
                   </TableBody>
-
                 </Box>
               </AccordionDetails>
             </Accordion>
             :
             <Typography className='text-error-filter'> No se han encotrados Resultados para la búsqueda Seleccionada, por favor intente de nuevo.</Typography>
           }
-
         </Box>
-
       }
-
       <div>
         <Modal open={open} onClose={handleClose}>
           <div
@@ -205,17 +201,6 @@ const FilterPage = () => {
           </div>
         </Modal>
       </div>
-
-
-
-
-
-
-
-
-
-
-
     </Box>
 
   )
