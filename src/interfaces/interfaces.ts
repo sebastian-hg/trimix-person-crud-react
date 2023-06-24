@@ -34,3 +34,8 @@ export interface FormPerson {
     documentType: string;
     birthdate: Date | null;
 }
+
+export interface ErrorDetail {
+    code:string | number;
+    msg: string;
+}

@@ -6,13 +6,13 @@ const PERSON_ENDPOINT: string = `${API_ENDPOINT}/person`
 
 class PersonService {
   addPerson = async (request: PersonResquet) => {
-    return axios.post<PersonResponse>(`${PERSON_ENDPOINT}`, request )
+    return await axios.post<PersonResponse>(`${PERSON_ENDPOINT}`, request )
       .then(response => response.data)
-      .catch(error => console.log(`error desde person add: `, error))
+      .catch(error => error.response.data)
   }
 
   editPerson = async (request: PersonResquet, id: number) => {
-    return axios.put<PersonResponse>(`${PERSON_ENDPOINT}/editar?id=${id}`, request)
+    return await  axios.put<PersonResponse>(`${PERSON_ENDPOINT}/editar?id=${id}`, request)
       .then(response => response.data)
       .catch(error => console.log(`error desde person edit: `, error))
   }

@@ -4,7 +4,7 @@ import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { PersonResquet } from '../../interfaces/interfaces';
+import { ErrorDetail, PersonResquet } from '../../interfaces/interfaces';
 import personService from '../../services/personService';
 
 const DataPerson = () => {
@@ -16,14 +16,15 @@ const DataPerson = () => {
   const navigate = useNavigate();
   const { register, formState: { errors }, handleSubmit } = useForm();
 
+  //variables
+  let errorMessage:ErrorDetail|null = null;
+
   //functions
   const handlerGoBack = () => {
     navigate('/');
   };
 
   const hadlerGetDataSubmit = (data) => {
-
-    console.log('data', data)
 
     if (state.state.data.name === null) {
 
@@ -36,7 +37,15 @@ const DataPerson = () => {
       }
 
       personService.addPerson(bodyRequest)
-        .then(handlerGoBack)
+        .then(data => {
+          console.log(data)
+          if (data.errorCode) {
+            errorMessage = data.errorCode;
+          } else {
+            errorMessage = null;
+            handlerGoBack();
+          }
+        })
         .catch(error => console.log(`error desde add Person: `, error));
     } else {
 
@@ -102,7 +111,7 @@ const DataPerson = () => {
                   id='document'
                   placeholder='Tipo de Documento'
                   defaultValue={state.state.data.document_type === null ? '' : state.state.data.document_type}
-                  {...register('typeDocument', { required: true})}
+                  {...register('typeDocument', { required: true })}
                 >
                   <option value='Dni'>Dni</option>
                   <option value='Pasaporte'>Pasaporte</option>
@@ -128,6 +137,12 @@ const DataPerson = () => {
           </form>
         </CardContent>
       </Card>
+      {
+        errorMessage &&
+        <Box>
+          hola
+        </Box>
+      }
     </Box>
   )
 }
