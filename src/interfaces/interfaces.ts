@@ -36,6 +36,16 @@ export interface FormPerson {
 }
 
 export interface ErrorDetail {
-    code:string | number;
+    code: string | number;
     msg: string;
+}
+
+//redux
+
+export interface PersonRedux {
+    name: string;
+    surname: string
+    document: number
+    documentType: string;
+    birthdate: string;
 }

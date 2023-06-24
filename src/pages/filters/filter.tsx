@@ -7,10 +7,12 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardContent, Modal, TableBody, TableCell, TableRow, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import '../../index.scss';
-import { FilterRequest, PersonResponse } from '../../interfaces/interfaces';
+import { FilterRequest, PersonRedux, PersonResponse } from '../../interfaces/interfaces';
 import personService from '../../services/personService';
+import {addUsers} from '../../redux/userSlice'
 
 const FilterPage = () => {
 
@@ -22,6 +24,7 @@ const FilterPage = () => {
 
   //hooks
   const navigate = useNavigate();
+  const dispactch = useDispatch();
   const { register, formState: { errors }, handleSubmit } = useForm();
 
   //functions
@@ -35,6 +38,7 @@ const FilterPage = () => {
       .then(data => {
         setPeople(data!)
         setFindFilter(true);
+        dispactch(addUsers(data!))
       }), (error: any) => {
         console.log('error en service', error)
       }
