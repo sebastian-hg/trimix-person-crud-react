@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../index.scss';
 import { FilterRequest, PersonRedux, PersonResponse } from '../../interfaces/interfaces';
 import personService from '../../services/personService';
-import {addUsers} from '../../redux/userSlice'
+import { addUsers } from '../../redux/userSlice'
 
 const FilterPage = () => {
 
@@ -21,6 +21,8 @@ const FilterPage = () => {
   const [open, setOpen] = useState(false);
   const [idDelete, setDelete] = useState<number>(0);
   const headerOptions = ['ID', 'Name', 'Apellido', 'Número Documento', 'Tipo Documento', 'Fecha Nacimiento', 'Modificar', 'Eliminar'];
+  const [errorMessage, setErrorMessage] = useState('');
+
 
   //hooks
   const navigate = useNavigate();
@@ -36,11 +38,22 @@ const FilterPage = () => {
     }
     personService.getPeople(bodyRequest)
       .then(data => {
-        setPeople(data!)
-        setFindFilter(true);
-        dispactch(addUsers(data!))
+        setErrorMessage(data.message);
+        if (!data.code) {
+          dispactch(addUsers(data!))
+          setPeople(data!)
+          console.log('error en service pasa por el if ', data);
+          setErrorMessage('');
+
+        } else {
+
+          console.log('error en service no pasa por el if ', data);
+          setErrorMessage(data.message);
+          console.log('error message ', errorMessage);
+        }
       }), (error: any) => {
-        console.log('error en service', error)
+        setPeople([]);
+        console.log('error en servicexxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', people);
       }
   }
 
@@ -82,7 +95,7 @@ const FilterPage = () => {
       }
     updateListPerson(idDelete);
     handleClose();
-    alert("Los datos del material han sido eliminados.");
+    alert('Los datos han sido eliminados.');
   };
 
   const updateListPerson = (id) => {
@@ -131,7 +144,7 @@ const FilterPage = () => {
       </Card>
       {(findFilter) &&
         <Box>
-          {(people!.length > 1) ?
+          {(people?.length >= 1) ?
             <Accordion defaultExpanded className='card-design mt-4 '>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 <Typography className='font-detail-card '>Resultados</Typography>
@@ -170,7 +183,7 @@ const FilterPage = () => {
               </AccordionDetails>
             </Accordion>
             :
-            <Typography className='text-error-filter'> No se han encotrados Resultados para la búsqueda Seleccionada, por favor intente de nuevo.</Typography>
+            <Typography className='text-error-filter'>{errorMessage !== '' ? errorMessage : 'No se han encotrados Resultados para la búsqueda Seleccionada, por favor intente de nuevo.'} </Typography>
           }
         </Box>
       }

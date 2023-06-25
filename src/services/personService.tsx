@@ -6,13 +6,13 @@ const PERSON_ENDPOINT: string = `${API_ENDPOINT}/person`
 
 class PersonService {
   addPerson = async (request: PersonResquet) => {
-    return await axios.post<PersonResponse>(`${PERSON_ENDPOINT}`, request )
+    return await axios.post<PersonResponse>(`${PERSON_ENDPOINT}`, request)
       .then(response => response.data)
       .catch(error => error.response.data)
   }
 
   editPerson = async (request: PersonResquet, id: number) => {
-    return await  axios.put<PersonResponse>(`${PERSON_ENDPOINT}/editar?id=${id}`, request)
+    return await axios.put<PersonResponse>(`${PERSON_ENDPOINT}/editar?id=${id}`, request)
       .then(response => response.data)
       .catch(error => console.log(`error desde person edit: `, error))
   }
@@ -26,7 +26,24 @@ class PersonService {
   getPeople = async (filterRequest: FilterRequest) => {
     return axios.get<PersonResponse[]>(`${PERSON_ENDPOINT}?name=${filterRequest.name}&documentType=${filterRequest.documentType}`)
       .then(response => response.data)
-      .catch(error => console.log(`error desde get Person: `, error, 'request:', filterRequest))
+      .catch(error => {
+        if (error.response) {
+          // Error de respuesta HTTP (por ejemplo, código de estado no exitoso)
+          console.log('',error.response.data);
+          console.log('eeeeeeeeee',error.response.status);
+          console.log('iiiiiiii',error.response.headers);
+          return error.response;
+        } else if (error.request) {
+          // No se recibió ninguna respuesta del servidor
+          console.log('error en el servidor',error.request);
+          return error;
+        } else {
+          // Error al configurar la solicitud
+          console.log('Error al configurar', error.message);
+          return error;
+        }
+        console.log(error.config);
+      })
   }
 }
 
