@@ -30,8 +30,6 @@ class PersonService {
         if (error.response) {
           // Error de respuesta HTTP (por ejemplo, código de estado no exitoso)
           console.log('',error.response.data);
-          console.log('eeeeeeeeee',error.response.status);
-          console.log('iiiiiiii',error.response.headers);
           return error.response;
         } else if (error.request) {
           // No se recibió ninguna respuesta del servidor

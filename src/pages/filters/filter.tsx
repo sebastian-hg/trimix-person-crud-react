@@ -4,7 +4,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardContent, Modal, TableBody, TableCell, TableRow, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Card, CardContent, MenuItem, InputLabel, Select, FormControl, Modal, TableBody, TableCell, TableRow, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -38,7 +38,7 @@ const FilterPage = () => {
     }
     personService.getPeople(bodyRequest)
       .then(data => {
-        setErrorMessage(data.message);
+        setFindFilter(true);
         if (!data.code) {
           dispactch(addUsers(data!))
           setPeople(data!)
@@ -49,7 +49,7 @@ const FilterPage = () => {
 
           console.log('error en service no pasa por el if ', data);
           setErrorMessage(data.message);
-          console.log('error message ', errorMessage);
+          console.log('error message xxxxxxxxxxx ', errorMessage);
         }
       }), (error: any) => {
         setPeople([]);
@@ -121,8 +121,33 @@ const FilterPage = () => {
                   placeholder='name'
                   type='text'
                 />
+                {/* <TextField
+                  label="Name"
+                  // id="outlined-size-small"
+                  // defaultValue="Small"
+                  type={'text'}
+                  {...register('name')}
+                  size="small"
+                /> */}
               </Box>
               <Box className='col-sm-4 col-12'>
+                {/* <FormControl fullWidth>
+                  <InputLabel id="document">Tipo de Documento</InputLabel>
+                  <Select
+                    // labelId="demo-simple-select-label"
+                    id='document'
+                    // value=''
+                    {...register('typeDocument')}
+                    label='Tipo de Documento'
+                    // onChange={handleChange}
+                    size='small'
+                  >
+                    <MenuItem value={''}>Seleccione tipo de Documento</MenuItem>
+                    <MenuItem value={'Dni'}>Dni</MenuItem>
+                    <MenuItem value={'Cedula'}>Cédula</MenuItem>
+                    <MenuItem value={'Pasaporte'}>Pasaporte</MenuItem>
+                  </Select>
+                </FormControl> */}
                 <select
                   className='input-size'
                   {...register('typeDocument')}
